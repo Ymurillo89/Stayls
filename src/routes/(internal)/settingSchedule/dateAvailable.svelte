@@ -1,29 +1,92 @@
 <script lang="ts">
     import { AccordionItem, Accordion } from 'flowbite-svelte'
+    import type { IGetDateAvailableCab } from 'src/models/interfaces';
+    import { Table, TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell } from 'flowbite-svelte';
+    import { Circle} from 'svelte-loading-spinners';
+
+    let dataDateAvailable:IGetDateAvailableCab[]=[];
+
+    async function getDateAvailable()
+    {    
+      let idStaff=localStorage.getItem("Staff")
+      let idLocation=localStorage.getItem("Location")
+
+      const getHour = await fetch(`https://localhost:7112/api/SettingScheduleCtrl/GetDateAvailable/${idStaff}/${idLocation}`, 
+      {
+          method: 'GET',              
+      });
+
+        dataDateAvailable =await getHour.json();      
+        //console.log(dataDateAvailable);
+        
+    }
+
+    async function delteHour(idHour:number,date:string) {
+        alert("Hola")
+    }
 
 </script>
 
-<div class="career-form mb-2">
-    <!--Disponibilidad por fecha registrada-->
-    <div class="text-sm text-neutral-600 p-1">
-       <h5 class="text-center mb-2 mt-2 text-xl font-bold text-gray-900 dark:text-white">Disponibilidad por fecha</h5>    
-       <Accordion>
-           <AccordionItem>
-             <span slot="header">My Header 1</span>
-             <p class="mb-2 text-gray-500 dark:text-gray-400">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo ab necessitatibus sint explicabo ...</p>
-             <p class="text-gray-500 dark:text-gray-400">Check out this guide to learn how to <a href="/" target="_blank" rel="noreferrer" class="text-blue-600 dark:text-blue-500 hover:underline">get started</a> and start developing websites even faster with components on top of Tailwind CSS.</p>
-           </AccordionItem>
-           <AccordionItem>
-             <span slot="header">My Header 2</span>
-             <p class="mb-2 text-gray-500 dark:text-gray-400">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo ab necessitatibus sint explicabo ...</p>
-             <p class="mb-2 text-gray-500 dark:text-gray-400">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo ab necessitatibus sint explicabo ...</p>
-             <p class="mb-2 text-gray-500 dark:text-gray-400">Learn more about these technologies:</p>
-             <ul class="list-disc pl-5 dark:text-gray-400 text-gray-500">
-               <li><a href="/" target="_blank" rel="noreferrer" class="text-blue-600 dark:text-blue-500 hover:underline" >Lorem ipsum</a></li>
-               <li><a href="https://tailwindui.com/" rel="noreferrer" target="_blank"  class="text-blue-600 dark:text-blue-500 hover:underline">Tailwind UI</a></li>
-             </ul>
-           </AccordionItem>
-         </Accordion>
-   </div>
+{#await getDateAvailable()}
 
-</div>
+    <div class="flex flex-wrap justify-center  text-center p-4">    
+            <Circle size="100" color="#FF3E00" unit="px" duration="1s" />    
+    </div>                      
+              
+  {:then res} 
+
+    <div class="rounded-xl border p-5 shadow-md w-12/12 bg-white  ">
+
+      <div class="flex w-full items-center justify-center border-b pb-3">
+        <div class="flex items-center">        
+            <div class="text-lg font-bold">Fechas con disponibilidad asignada</div>                         
+        </div>            
+      </div>
+  
+      <div class=" md:flex flex-wrap mt-5 ">
+        {#each dataDateAvailable as date}
+
+        <div class=" w-12/12 md:w-3/12 mt-2  border-gray-200 dark:border-gray-700 text-center">
+
+            <Accordion>
+              <AccordionItem>
+                <span slot="header">{date.date}</span>
+                <Table shadow color="default" hoverable={true}>
+                  <TableHead>
+                    <TableHeadCell><div class="flex justify-center">Hora</div></TableHeadCell>
+                    <TableHeadCell><div class="flex justify-center">Acción</div></TableHeadCell>                    
+                  </TableHead>
+                    {#each date.dateAvailableLin as hours}                   
+                     <TableBody >
+                       <TableBodyRow>
+                         <TableBodyCell><div class="flex justify-center">{hours.descriptionHour}</div></TableBodyCell>     
+                         <TableBodyCell>
+                          <div class="flex justify-center">
+                          <button on:click={()=>delteHour(hours.idRowsHour,date.date)}>
+                            <i  style="cursor: pointer;" class="fas fa-trash-alt text-center fa-1x hover:text-gray-500"></i>
+                          </button>
+                          </div>
+                        </TableBodyCell>                      
+                       </TableBodyRow>
+                      </TableBody>
+                    {/each}
+                   </Table>
+                
+              </AccordionItem>                
+            </Accordion>
+
+        </div>
+
+        {/each}
+      </div>
+      
+    </div>
+                
+{/await} 
+
+  
+   
+
+
+
+

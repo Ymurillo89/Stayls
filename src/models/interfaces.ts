@@ -6,7 +6,18 @@ export interface IGetUser{
 }
 
 export interface IGetHour{
-    idRows:number
+    idRowsHour:number
+    idAvailable:number
     description:string
+    selected?:boolean
 }
 
+export interface IGetDateAvailableCab{
+    date:string
+    dateAvailableLin:IGetDateAvailableLin[]
+}
+
+export interface IGetDateAvailableLin{
+    idRowsHour:number
+    descriptionHour:string
+}
