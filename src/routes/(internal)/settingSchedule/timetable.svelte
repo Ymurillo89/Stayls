@@ -15,8 +15,7 @@
     let alerts = new AlertService();
 
     $:dateSelected ==""? viewHours=false:viewHours=true;
-
-   
+  
     
 
     //Obtenemos las horas para que sean seleccionadas
@@ -26,7 +25,7 @@
 
         dataHour =[];       
 
-        const getHour = await fetch(`https://localhost:7112/api/SettingScheduleCtrl/GetHour/${dateSelected}/${idStaff}/${idLocation}`, 
+        const getHour = await fetch(`https://andresmu91.bsite.net/api/SettingScheduleCtrl/GetHour/${dateSelected}/${idStaff}/${idLocation}`, 
         {
             method: 'GET',              
         });
@@ -55,6 +54,7 @@
         if(hourSelected.length>0){
 
             hourSelected.forEach(element => {
+                
                 dataIdRowhour.push({
                     idRows:element
                 })
@@ -67,7 +67,7 @@
                 hours:dataIdRowhour
             })
 
-            const setdataHours=await fetch(`https://localhost:7112/api/SettingScheduleCtrl/SetHour`, 
+            const setdataHours=await fetch(`https://andresmu91.bsite.net/api/SettingScheduleCtrl/SetHour`, 
             {
                 method: 'POST',          
                 headers: { 
@@ -88,6 +88,8 @@
                 }else{ */
                     alerts.ShowSwalBasicSuccess("Correcto","Programación asignada correctamente")
                     hourSelected=[];
+                    dataHour =[];
+                    dateSelected="";
               //  }                
 
             }else{                
@@ -111,12 +113,12 @@
             }
         })
 
-        dataHour=dataHour;
-        
+        dataHour=dataHour;       
 
         console.log(dataHour);
         
     }
+
 
 
 </script>

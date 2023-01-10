@@ -19,5 +19,6 @@ export interface IGetDateAvailableCab{
 
 export interface IGetDateAvailableLin{
     idRowsHour:number
+    idRowsAvailable:number
     descriptionHour:string
 }

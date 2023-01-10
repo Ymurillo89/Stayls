@@ -3,6 +3,9 @@
     import type { IGetDateAvailableCab } from 'src/models/interfaces';
     import { Table, TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell } from 'flowbite-svelte';
     import { Circle} from 'svelte-loading-spinners';
+    import { AlertService } from '../../../service/alerts';   
+
+    let alerts = new AlertService();
 
     let dataDateAvailable:IGetDateAvailableCab[]=[];
 
@@ -11,19 +14,40 @@
       let idStaff=localStorage.getItem("Staff")
       let idLocation=localStorage.getItem("Location")
 
-      const getHour = await fetch(`https://localhost:7112/api/SettingScheduleCtrl/GetDateAvailable/${idStaff}/${idLocation}`, 
+      const getHour = await fetch(`https://andresmu91.bsite.net/api/SettingScheduleCtrl/GetDateAvailable/${idStaff}/${idLocation}`, 
       {
           method: 'GET',              
       });
 
         dataDateAvailable =await getHour.json();      
-        //console.log(dataDateAvailable);
+        console.log(dataDateAvailable);
         
     }
 
-    async function delteHour(idHour:number,date:string) {
-        alert("Hola")
+    async function delteHourByDay(idAvailable:number,idHour:number,date:string) {
+      let idStaff=localStorage.getItem("Staff")
+      let idLocation=localStorage.getItem("Location")
+      
+      const getHourByDay = await fetch(`https://andresmu91.bsite.net/api/SettingScheduleCtrl/DeleteHourByDay/${idStaff}/${idLocation}/${idAvailable}/${idHour}/${date}`, 
+      {
+          method: 'DELETE',              
+      });
+      
+      const content = await getHourByDay.text();
+
+      if(parseInt(content) == 1 ){
+        
+        alerts.ShowSwalBasicWarning("Advertencia","Este día ya tiene una cita asignada") 
+
+      }else{
+        alerts.ShowSwalBasicSuccess("Correcto","Eliminación exitosa") 
+        getDateAvailable();
+      }
+
+
     }
+    
+  
 
 </script>
 
@@ -62,7 +86,7 @@
                          <TableBodyCell><div class="flex justify-center">{hours.descriptionHour}</div></TableBodyCell>     
                          <TableBodyCell>
                           <div class="flex justify-center">
-                          <button on:click={()=>delteHour(hours.idRowsHour,date.date)}>
+                          <button on:click={()=>delteHourByDay(hours.idRowsAvailable,hours.idRowsHour,date.date)}>
                             <i  style="cursor: pointer;" class="fas fa-trash-alt text-center fa-1x hover:text-gray-500"></i>
                           </button>
                           </div>
