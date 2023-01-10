@@ -17,7 +17,7 @@
       alert= false;
 
       if(user!="" && password !=""){
-        const rawResponse = await fetch(`https://localhost:7112/api/LoginCtrl/Login/${user}/${password}`, 
+        const rawResponse = await fetch(`https://andresmu91.bsite.net/api/LoginCtrl/Login/${user}/${password}`, 
         {
           method: 'GET',  
           headers: {
