@@ -3,55 +3,58 @@
     import { Alert } from 'flowbite-svelte';
     import type { IGetHour} from '../../../models/interfaces'
     import { Circle} from 'svelte-loading-spinners';
-    import { AlertService } from '../../../service/alerts';   
-    import { element } from 'svelte/internal';
+    import { AlertService } from '../../../service/alerts';       
     
     let dateSelected:string="";
     let viewHours:boolean=false;       
-    let dataHour:IGetHour[]=[]
-    let hourSelected:[]=[]
+    let dataHour:IGetHour[]=[];
+    let hourSelected:number[]=[];
+
     let checkAllHour:boolean=false
 
     let alerts = new AlertService();
 
-    $:dateSelected ==""? viewHours=false:viewHours=true;
-  
+    $:dateSelected ==""? viewHours=false:viewHours=true; 
     
 
     //Obtenemos las horas para que sean seleccionadas
     async function getHours(){  
+
         let idStaff=localStorage.getItem("Staff")
         let idLocation=localStorage.getItem("Location")
 
         dataHour =[];       
 
-        const getHour = await fetch(`https://andresmu91.bsite.net/api/SettingScheduleCtrl/GetHour/${dateSelected}/${idStaff}/${idLocation}`, 
+        const getHour = await fetch(`https://localhost:7112/api/SettingScheduleCtrl/GetHour/${dateSelected}/${idStaff}/${idLocation}`, 
         {
             method: 'GET',              
         });
 
-        dataHour =await getHour.json();              
+        dataHour =await getHour.json();                     
 
-        dataHour.forEach(element => {
-            
-            if(element.idAvailable !=0)
-            {
-                element.selected=true
-            }
-        });
-
-        dataHour = dataHour;
-
-        console.log(dataHour);
+        //console.log(dataHour);
            
     }       
 
     //Enviamos la configuración de las horas con sus respectivas validaciones
-    async function setHoursAvailable() {
+    async function setHoursAvailable(){
+
         let dataIdRowhour:any=[];
         let data:any=[];
+        hourSelected=[];
+        console.log(dataHour);
+     
+        dataHour.forEach(e=>{
+            //debugger
+            if(e.selected==true){
+                hourSelected.push(e.idRowsHour)
+                
+            }
+        })
+
         
-        if(hourSelected.length>0){
+        if(dataHour.length>0 ){
+            debugger
 
             hourSelected.forEach(element => {
                 
@@ -67,7 +70,10 @@
                 hours:dataIdRowhour
             })
 
-            const setdataHours=await fetch(`https://andresmu91.bsite.net/api/SettingScheduleCtrl/SetHour`, 
+            console.log(data);
+            
+
+           const setdataHours=await fetch(`https://andresmu91.bsite.net/api/SettingScheduleCtrl/SetHour`, 
             {
                 method: 'POST',          
                 headers: { 
@@ -90,6 +96,7 @@
                     hourSelected=[];
                     dataHour =[];
                     dateSelected="";
+                    checkAllHour=false;
               //  }                
 
             }else{                
@@ -102,21 +109,26 @@
 
     }  
 
+    function selectChecked(idRowsHour:number){
+
+        dataHour.forEach(e=>{
+            if(e.idRowsHour == idRowsHour){
+                e.selected==true? e.selected=false : e.selected=true
+            }
+        })
+
+    }
     //En dado caso que se quiera seleccionar todas las horas
    function checkAll(){
         debugger
         checkAllHour==false? checkAllHour=true : checkAllHour=false
         dataHour.forEach(e=>{     
-
             if(e.idAvailable==0){
-              checkAllHour==true? e.selected=true : e.selected=false
+              checkAllHour==true? e.selected=true : e.selected=false              
             }
         })
 
-        dataHour=dataHour;       
-
-        console.log(dataHour);
-        
+        dataHour=dataHour;               
     }
 
 
@@ -166,9 +178,10 @@
                                <div class="flex flex-wrap mt-4"> 
                                        {#each dataHour as hours}
                                             <div class="w-4/12 md:w-2/12 rounded border border-gray-200 dark:border-gray-700 text-center">
-                                                <Checkbox checked={hours.selected==true} disabled={hours.idAvailable!=0} bind:group={hourSelected} name="hourSelected" class="w-full p-4" value="{hours.idRowsHour}">{hours.description}</Checkbox>
+                                                <Checkbox on:change={()=>selectChecked(hours.idRowsHour)} checked={hours.selected==true } disabled={hours.idAvailable!=0} name="hourSelected" class="w-full p-4" value="{hours.idRowsHour}">{hours.description}</Checkbox>
                                             </div>
                                        {/each}    
+                                       
                                </div>
    
                                <!-- Podemos ver los horarios seleccionados(el ID de las horas) {hourSelected} -->                       

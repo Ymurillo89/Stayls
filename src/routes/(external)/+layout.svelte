@@ -14,7 +14,7 @@
           Barber
         </span>
       </NavBrand >
-      <div class="flex md:order-2" >
+      <div class="flex md:order-2">
         <a   class="inline-block rounded bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition hover:scale-110 hover:shadow-xl focus:outline-none focus:ring active:bg-indigo-500"
              href="/login"
         ><i class="fas fa-user"></i></a>

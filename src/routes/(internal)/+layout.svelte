@@ -1,5 +1,8 @@
 <script lang="ts">
+  import { goto } from "$app/navigation"; 
+
     let mainMenu:boolean=false;
+    
     function mainMenuBar(){
         mainMenu= true;
     }
@@ -7,15 +10,24 @@
     function closeMenuBurger(){    
         mainMenu=false;
     }
+
+    function logOut(){
+        localStorage.clear();
+        goto("/login")
+    }
+
+  
+
+
   
   </script>
   
   <div class="bg-blue-500">
     <nav class="relative px-4 py-2 flex justify-between items-center bg-white">
-        <a class="text-3xl font-bold leading-none" href="" >
-            <img style="height: 70px;"  src="" alt="">
+        <a class="text-3xl font-bold leading-none" href="settingSchedule" >
+            <img style="height: 40px;"  src="https://flowbite.com/docs/images/logo.svg" alt="">
         </a>
-        <div class="lg:hidden mt-6" >
+        <div class="lg:hidden " >
             <button on:click={mainMenuBar} class=" flex items-center text-blue-600 p-3" >
                 <svg class="block h-4 w-4 fill-current" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                     <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
@@ -23,7 +35,7 @@
             </button>
         </div>
         <ul class="hidden absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 lg:flex lg:mx-auto lg:flex lg:items-center lg:w-auto lg:space-x-6">
-            <li><a class="text-sm text-gray-400 hover:text-orange-500" href="/settingSchedule">Horarios</a></li>
+            <li><a class="text-sm text-gray-400 hover:text-orange-500" href="settingSchedule">Horarios</a></li>
             <li><a class="text-sm text-gray-400 hover:text-orange-500" href="/setting">Recepción tejeduría</a></li>
             <li><a class="text-sm text-gray-400 hover:text-orange-500" href="/setting">Movimiento tela</a></li>
             <li><a class="text-sm text-gray-400 hover:text-orange-500" href="reports">Reporte</a></li>
@@ -37,7 +49,7 @@
             <div class="flex items-center mb-8">
                 <a on:click={closeMenuBurger} class="mr-auto text-3xl font-bold leading-none" href="#">
                     <a class="text-3xl font-bold leading-none" href="" >
-                        <img style="height: 70px;"  src="" alt="">
+                        <img style="height: 40px;"  src="https://flowbite.com/docs/images/logo.svg" alt="">
                     </a>
                 </a>
                 <button on:click={closeMenuBurger}>
@@ -59,6 +71,11 @@
                     </li>
                     <li class="mb-1">
                         <a on:click={closeMenuBurger} class="block p-4 text-sm font-semibold text-gray-400 hover:bg-blue-50 hover:text-blue-600 rounded" href="/reports">Reporte</a>
+                    </li>
+                    <li class="mb-1 text-center">
+                        <button on:click={logOut} class="inline-block rounded bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition hover:scale-110 hover:shadow-xl focus:outline-none focus:ring active:bg-indigo-500" >
+                            <i class="fas fa-door-open "></i>
+                        </button>
                     </li>
                 </ul>
             </div>

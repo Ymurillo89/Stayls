@@ -3,8 +3,18 @@
     import Timetable from './timetable.svelte';  
     import DateAvailable from './dateAvailable.svelte';    
     import type { IGetHour} from '../../../models/interfaces'   
+    import { goto } from '$app/navigation';
 
-    
+  /*   $:{
+      debugger
+      let Staff = localStorage.getItem("Staff")
+      if(Staff=="")
+      {
+        //goto("/login")
+        console.log("No");
+        
+      }
+    } */
     
   </script>  
 
