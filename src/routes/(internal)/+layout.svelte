@@ -14,9 +14,7 @@
     function logOut(){
         localStorage.clear();
         goto("/login")
-    }
-
-  
+    }  
 
 
   
@@ -35,9 +33,7 @@
             </button>
         </div>
         <ul class="hidden absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 lg:flex lg:mx-auto lg:flex lg:items-center lg:w-auto lg:space-x-6">
-            <li><a class="text-sm text-gray-400 hover:text-orange-500" href="settingSchedule">Horarios</a></li>
-            <li><a class="text-sm text-gray-400 hover:text-orange-500" href="/setting">Recepción tejeduría</a></li>
-            <li><a class="text-sm text-gray-400 hover:text-orange-500" href="/setting">Movimiento tela</a></li>
+            <li><a class="text-sm text-gray-400 hover:text-orange-500" href="settingSchedule">Horarios</a></li>         
             <li><a class="text-sm text-gray-400 hover:text-orange-500" href="reports">Reporte</a></li>
         </ul>
     </nav>
@@ -63,12 +59,7 @@
                     <li class="mb-1">
                         <a on:click={closeMenuBurger} class="block p-4 text-sm font-semibold text-gray-400 hover:bg-blue-50 hover:text-blue-600 rounded" href="/settingSchedule">Horarios</a>
                     </li>
-                    <li class="mb-1">
-                        <a on:click={closeMenuBurger} class="block p-4 text-sm font-semibold text-gray-400 hover:bg-blue-50 hover:text-blue-600 rounded" href="/setting">Recepción rollo</a>
-                    </li>
-                    <li class="mb-1">
-                        <a on:click={closeMenuBurger} class="block p-4 text-sm font-semibold text-gray-400 hover:bg-blue-50 hover:text-blue-600 rounded" href="/setting">Movimiento tela</a>
-                    </li>
+             
                     <li class="mb-1">
                         <a on:click={closeMenuBurger} class="block p-4 text-sm font-semibold text-gray-400 hover:bg-blue-50 hover:text-blue-600 rounded" href="/reports">Reporte</a>
                     </li>

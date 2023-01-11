@@ -1,22 +1,23 @@
 <script lang="ts">  
     import { goto } from '$app/navigation';
     import type { IGetUser } from '../../../models/interfaces';
-
+    import { Circle} from 'svelte-loading-spinners';
     let number:number =0
     let user:string="";
     let password:string="";
 
     let dataUser:IGetUser[]=[];
-    let alert:boolean = false
-
+    let alert:boolean = false;
+    let loading:boolean=false;
     
 
     //Verificamos que las credenciales sean correctas y enviamos a la página correspondiente
     async function getLogin(){
    
       alert= false;
-
+      
       if(user!="" && password !=""){
+        loading=true;
         const rawResponse = await fetch(`https://andresmu91.bsite.net/api/LoginCtrl/Login/${user}/${password}`, 
         {
           method: 'GET',  
@@ -28,6 +29,7 @@
         dataUser= await rawResponse.json();                
 
         if(dataUser.length==0){
+          loading=false;
           alert=true
         }else{
 
@@ -40,6 +42,7 @@
           });
 
           //Ruteamos hacia otra pestaña
+          loading=false;
           goto('/settingSchedule')
 
         }
@@ -54,6 +57,23 @@
   
   </script>
   
+<!--    <div class="relative">    
+    <div class="absolute h-screen flex justify-center items-center left-1/2 transform -translate-x-1/2 ">
+      <Circle  size="100" color="#FF3E00" unit="px" duration="1s" />   
+    </div>
+  </div>  -->
+
+  {#if loading}
+    <div class="">
+      <div class=" inset-0 h-screen flex justify-center items-center">
+        <div>
+          <Circle  size="100" color="#FF3E00" unit="px" duration="1s" />   
+        </div>
+      </div>
+    </div>
+
+  {/if}
+
   <section class="relative flex flex-wrap lg:h-screen lg:items-center">
     <div class="w-full px-4 py-12 sm:px-6 sm:py-16 lg:w-1/2 lg:px-8 lg:py-24">
       <div class="mx-auto max-w-lg text-center">

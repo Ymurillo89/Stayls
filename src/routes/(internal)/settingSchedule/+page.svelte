@@ -4,16 +4,21 @@
     import DateAvailable from './dateAvailable.svelte';    
     import type { IGetHour} from '../../../models/interfaces'   
     import { goto } from '$app/navigation';
+    import { onMount } from 'svelte';
 
+    //Verificamos qu el usuario si se haya loggeado correctamente
+    onMount(async()=>{
+
+      let Staff = localStorage.getItem("Staff")
+      if(Staff=="" || Staff==null || Staff==undefined)
+      {
+        goto("/login")
+        //console.log("No");        
+      }
+    })
   /*   $:{
       debugger
-      let Staff = localStorage.getItem("Staff")
-      if(Staff=="")
-      {
-        //goto("/login")
-        console.log("No");
-        
-      }
+      
     } */
     
   </script>  
