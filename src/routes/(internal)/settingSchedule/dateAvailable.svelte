@@ -14,7 +14,7 @@
       let idStaff=localStorage.getItem("Staff")
       let idLocation=localStorage.getItem("Location")
 
-      const getHour = await fetch(`https://localhost:7112/api/SettingScheduleCtrl/GetDateAvailable/${idStaff}/${idLocation}`, 
+      const getHour = await fetch(`https://andresmu91.bsite.net/api/SettingScheduleCtrl/GetDateAvailable/${idStaff}/${idLocation}`, 
       {
           method: 'GET',              
       });
@@ -28,7 +28,7 @@
       let idStaff=localStorage.getItem("Staff")
       let idLocation=localStorage.getItem("Location")
       
-      const getHourByDay = await fetch(`https://localhost:7112/api/SettingScheduleCtrl/DeleteHourByDay/${idStaff}/${idLocation}/${idAvailable}/${idHour}/${date}`, 
+      const getHourByDay = await fetch(`https://andresmu91.bsite.net/api/SettingScheduleCtrl/DeleteHourByDay/${idStaff}/${idLocation}/${idAvailable}/${idHour}/${date}`, 
       {
           method: 'DELETE',              
       });

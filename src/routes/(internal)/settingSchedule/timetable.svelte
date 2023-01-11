@@ -25,7 +25,7 @@
 
         dataHour =[];       
 
-        const getHour = await fetch(`https://localhost:7112/api/SettingScheduleCtrl/GetHour/${dateSelected}/${idStaff}/${idLocation}`, 
+        const getHour = await fetch(`https://andresmu91.bsite.net/api/SettingScheduleCtrl/GetHour/${dateSelected}/${idStaff}/${idLocation}`, 
         {
             method: 'GET',              
         });
